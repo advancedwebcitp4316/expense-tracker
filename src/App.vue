@@ -2,6 +2,7 @@
   import {ref, computed} from 'vue'
   import Header from './components/Header.vue'
   import Balance from './components/Balance.vue'
+  import IncomeExpenses from './components/IncomeExpenses.vue';
 
   //const transactions = ref([])
   const transactions = ref([
@@ -18,11 +19,34 @@
     }, 0)
   })
 
+  //get income
+  const income = computed(() => {
+    return transactions.value
+    .filter((transaction) => transaction.amount > 0)
+    .reduce( (acc, transaction) => {
+      return acc + transaction.amount
+    }, 0)
+    .toFixed(2)
+  })
+
+
+  //get expense
+  const expense = computed(() => {
+    return transactions.value
+    .filter((transaction) => transaction.amount < 0)
+    .reduce( (acc, transaction) => {
+      return acc + transaction.amount
+    }, 0)
+    .toFixed(2)
+  })
+
+  
 </script>
 
 <template>
   <Header />
   <div class="container">
-    <Balance :total="+total"/>
+    <Balance :total="+total"></Balance>
+    <IncomeExpenses :income="+income" :expense="+expense"></IncomeExpenses>
   </div>
 </template>
