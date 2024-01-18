@@ -23,6 +23,6 @@
 <template>
   <Header />
   <div class="container">
-    <Balance :total="total"/>
+    <Balance :total="+total"/>
   </div>
 </template>
