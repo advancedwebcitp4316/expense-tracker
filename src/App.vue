@@ -1,5 +1,5 @@
 <script setup>
-  import {ref, computed} from 'vue'
+  import {ref, computed, onMounted} from 'vue'
   import Header from './components/Header.vue'
   import Balance from './components/Balance.vue'
   import IncomeExpenses from './components/IncomeExpenses.vue';
@@ -49,6 +49,8 @@
     })
     // console.log(transactions)
     // console.log(JSON.stringify(transactions.value))
+
+    saveTransactionsToLocalStorage()
   }
 
   //generate unique ids
@@ -59,7 +61,23 @@
   //delete transaction
   const handleTransactionsDeleted = (id) => {
     transactions.value = transactions.value.filter((transaction) => transaction.id !== id)
+    saveTransactionsToLocalStorage()
   }
+
+  //save to local storage
+  const saveTransactionsToLocalStorage = () => {
+    localStorage.setItem('transactions', JSON.stringify(transactions.value))
+  }
+
+  //first loads
+  onMounted( () => {
+    const savedTransactions = JSON.parse(localStorage.getItem('transactions'))
+
+    if(savedTransactions)
+    {
+      transactions.value = savedTransactions
+    }
+  })
 </script>
 
 <template>
