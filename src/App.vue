@@ -4,6 +4,7 @@
   import Balance from './components/Balance.vue'
   import IncomeExpenses from './components/IncomeExpenses.vue';
   import AddTransaction from './components/AddTransaction.vue';
+  import TransactionList from './components/TransactionList.vue';
   const transactions = ref([])
   // const transactions = ref([
   //   {id: 1, text: 'Flowers', amount: -19.99},
@@ -54,6 +55,11 @@
   const generateUniqueId = () => {
     return Math.floor(Math.random() * 10000000)
   }
+
+  //delete transaction
+  const handleTransactionsDeleted = (id) => {
+    transactions.value = transactions.value.filter((transaction) => transaction.id !== id)
+  }
 </script>
 
 <template>
@@ -61,6 +67,7 @@
   <div class="container">
     <Balance :total="+total"></Balance>
     <IncomeExpenses :income="+income" :expense="+expense"></IncomeExpenses>
+    <TransactionList :transactions="transactions" @transactionDeleted="handleTransactionsDeleted"></TransactionList>
     <AddTransaction @transactionSubmitted="handleTransactionSubmitted"></AddTransaction>
     <!-- {{ transactions }} -->
   </div>
